@@ -1,0 +1,5 @@
+package cafe
+
+class coffeeSpec {
+
+}

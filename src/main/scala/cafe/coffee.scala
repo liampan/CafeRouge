@@ -1,0 +1,5 @@
+package cafe
+
+object coffee {
+
+}
