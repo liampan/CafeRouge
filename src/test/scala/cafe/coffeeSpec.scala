@@ -14,29 +14,29 @@ class coffeeSpec extends WordSpec with MustMatchers {
 
     "return 'GroundCoffee' when 'CoffeeBeans' given to grinder" in {
 
-      Coffee.grind(CoffeeBean("ArabicaBeans")) mustEqual GroundCoffee("ArabicaBeans")
+      Coffee.grind(CoffeeBean("Arabica Beans")) mustEqual GroundCoffee("Arabica Beans")
     }
     "return 'not real beans' when given 'jelly beans' " in {
 
-      val i = intercept[BeanException](Coffee.grind(CoffeeBean("jellyBeans")))
+      val i = intercept[BeanException](Coffee.grind(CoffeeBean("Jelly Beans")))
 
-       i.getMessage mustEqual "jellyBeans are not accepted"
+       i.getMessage mustEqual "Jelly Beans are not accepted"
     }
 
 
-    "return 'FrothedMilk' when given 'WholeMilk'" in {
+    "return 'FrothedMilk' when given 'Whole Milk'" in {
 
-      Coffee.milkFoam(Milk("WholeMilk")) mustEqual FrothedMilk("WholeMilk")
+      Coffee.milkFoam(Milk("Whole Milk")) mustEqual FrothedMilk("Whole Milk")
     }
 
-    "return 'FrothedMilk' when given 'SkimmedMilk'" in {
+    "return 'FrothedMilk' when given 'Skimmed Milk'" in {
 
-      Coffee.milkFoam(Milk("SkimmedMilk")) mustEqual FrothedMilk("SkimmedMilk")
+      Coffee.milkFoam(Milk("Skimmed Milk")) mustEqual FrothedMilk("Skimmed Milk")
     }
 
-    "return illegalArg... when given 'SemiSkimmedMilk'" in {
+    "return illegalArg... when given 'Semi Skimmed Milk'" in {
 
-      val i = intercept[IllegalArgumentException](Coffee.milkFoam(Milk("SemiSkimmedMilk")))
+      val i = intercept[IllegalArgumentException](Coffee.milkFoam(Milk("Semi Skimmed Milk")))
 
       i.getMessage mustEqual "That milk is not usable"
 
@@ -46,25 +46,26 @@ class coffeeSpec extends WordSpec with MustMatchers {
 
     "return 'Espresso' when given 'Water', 'GroundCoffee' " in {
 
-      Coffee.brew(GroundCoffee("ArabicaBeans"), Water(50)) mustEqual Espresso(50)
+      Coffee.brew(GroundCoffee("Arabica Beans"), Water(50)) mustEqual Espresso(GroundCoffee("Arabica Beans"),50)
     }
 
     "return 'Too cold' when given 'Water of 35' 'GroundCoffee'" in {
 
-      val i = intercept[BrewException](Coffee.brew(GroundCoffee("ArabicaBeans"), Water(35)))
+      val i = intercept[BrewException](Coffee.brew(GroundCoffee("Arabica Beans"), Water(35)))
 
       i.getMessage mustEqual "The water is too cold"
 
     }
 
     "return 'Latte' when given 'espresso' and 'frothedMilk" in {
-      Coffee.combine(Espresso(50), FrothedMilk("WholeMilk")) mustEqual Latte("WholeMilk", 45)
+      Coffee.combine(Espresso(GroundCoffee("Arabica Beans"), 50), FrothedMilk("Whole Milk")) mustEqual Latte("Whole Milk", 45)
     }
 
-    "return 'Latte(WholeMilk, 50)' when given 'ArabicaBeans, WholeMilk, 50'" in {
+    "return 'Latte(Whole Milk, 50)' when given 'Arabica Beans, Whole Milk, 50'" in {
 
-      Coffee.barista(CoffeeBean("ArabicaBeans"), Milk("WholeMilk"), 50) mustEqual Latte("WholeMilk", 45)
+      Coffee.barista(CoffeeBean("Arabica Beans"), Milk("Whole Milk"), 50) mustEqual Latte("Whole Milk", 45)
     }
+
 
 
 
