@@ -40,6 +40,7 @@ object Coffee extends App {
     milkInput.milkType match {
       case "Whole Milk" => foam
       case "Skimmed Milk" => foam
+      case "no Milk" => foam //shouldn't go into foam?
       case _ => throw new IllegalArgumentException("That milk is not usable")
     }
 
