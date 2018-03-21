@@ -10,11 +10,10 @@ case class GroundCoffee(bean : String)
 case class Milk(milkType : String)
 case class FrothedMilk(fat : String)
 case class Espresso(beanType : GroundCoffee, temp : Int)
-case class Latte(fatFactor : String, temp : Int)
 case class CoffeeCup(shot : Espresso, frothedMilk : FrothedMilk)
 
-case class BeanException(msg : String) extends Exception(msg)
-case class BrewException(msg : String) extends Exception(msg)
+case class BeanException(msg : String) extends Exception
+case class BrewException(msg : String) extends Exception
 
 
 object Coffee extends App {
@@ -23,11 +22,12 @@ object Coffee extends App {
 
 
   def heat(water : Water, heatTo : Int) : Future[Water] = Future {
-    Thread.sleep(Random.nextInt(3000))
+    Thread.sleep(Random.nextInt(1000))
     water.copy(heatTo)
   }
 
   def grind(beanInput : CoffeeBean) : Future[GroundCoffee] = Future {
+
     lazy val grinder = {
       println(s"currently grinding ${beanInput.beanType}")
       Thread.sleep(Random.nextInt(1000))
@@ -37,35 +37,33 @@ object Coffee extends App {
       case "Italian Beans" => grinder
       case _ => throw BeanException(s"${beanInput.beanType} are not accepted")
     }
-
   }
 
   def milkFoam(milkInput : Milk) : Future[FrothedMilk] = Future {
+
     lazy val foam = {println(s"frothing ${milkInput.milkType}")
       Thread.sleep(Random.nextInt(1000))
       FrothedMilk(milkInput.milkType)}
+
     milkInput.milkType match {
       case "Whole Milk" => foam
       case "Skimmed Milk" => foam
-      case "no Milk" => foam //shouldn't go into foam?
+      case "no Milk" => foam
       case _ => throw new IllegalArgumentException("That milk is not usable")
     }
 
   }
 
   def brew(coffee : GroundCoffee, water : Water) : Future[Espresso] = Future {
-  if (water.temp <40) {throw BrewException("The water is too cold")}
+
+  if (water.temp >=40) throw {BrewException("The water is too cold")}
+
   else {Thread.sleep(Random.nextInt(1000))
-    Espresso(coffee, water.temp)}
+    Espresso(coffee, water.temp-5)}
   }
 
-  def combine(espresso : Espresso, milk : FrothedMilk) : Future[Latte] = Future {
-    Thread.sleep(Random.nextInt(1000))
-    Latte(milk.fat, espresso.temp-5)
-  }
 
   def barista(bean: CoffeeBean, milk: Milk, temp: Int) : Future[CoffeeCup] = {
-
 
     val hotWater = heat(Water(20), temp)
     val ground = grind(bean)
@@ -82,8 +80,7 @@ object Coffee extends App {
       CoffeeCup(shot, frothedMilk)
     }
 
-//Need to look at implicits code
 
   }
-
+barista(CoffeeBean("Jelly Beans"), Milk("Cashew Milk"), 50)
 }
