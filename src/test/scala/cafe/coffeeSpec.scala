@@ -4,13 +4,7 @@ package cafe
 import org.scalatest.AsyncFlatSpec
 
 
-//
-//    "return 'not real beans' when given 'jelly beans' " in {
-//
-//      val i = intercept[BeanException](Coffee.grind(CoffeeBean("Jelly Beans")))
-//
-//      i.getMessage mustEqual "Jelly Beans are not accepted"
-//    }
+
 
 //
 //    "return illegalArg... when given 'Semi Skimmed Milk'" in {
@@ -50,6 +44,18 @@ import org.scalatest.AsyncFlatSpec
     Coffee.grind(CoffeeBean("Arabica Beans")) map { result => assert(result == GroundCoffee("Arabica Beans")) }
   }
 
+
+
+  it should "return 'Jelly Beans are not accepted' when given 'Jelly Beans'" ignore  {
+
+    assertThrows[BeanException] {
+      Coffee.grind(CoffeeBean("Jelly Beans"))
+    }
+
+
+  }
+
+
   behavior of "Coffee.milkFoam"
 
   it should "return 'FrothedMilk' when given 'Whole Milk'" in {
@@ -64,51 +70,39 @@ import org.scalatest.AsyncFlatSpec
 behavior of "Coffee.brew"
 
   it should "return 'Espresso' when given 'Water', 'GroundCoffee'" in {
-    Coffee.brew(GroundCoffee("Arabica Beans"), Water(50)) map { result => assert(result == Espresso(GroundCoffee("Arabica Beans"), 50))}
+    Coffee.brew(GroundCoffee("Arabica Beans"), Water(50)) map { result => assert(result == Espresso(GroundCoffee("Arabica Beans"), 45))}
 
   }
 
-behavior of "Coffee.combine"
 
-  it should "return 'Latte' when given 'espresso' and 'frothedMilk" in {
-    Coffee.combine(Espresso(GroundCoffee("Arabica Beans"), 50), FrothedMilk("Whole Milk")) map { result => assert(result == Latte("Whole Milk", 45))}
+
+  it should "return 'Too cold' when given 'Water(35)'  and 'GroundCoffee'" in  {
+
+
+    assertThrows[BeanException]{
+      Coffee.brew(GroundCoffee("Arabica Beans"), Water(35))
+    }
+
   }
 
 
+  //    "return 'Too cold' when given 'Water of 35' 'GroundCoffee'" in {
+  //
+  //      val i = intercept[BrewException](Coffee.brew(GroundCoffee("Arabica Beans"), Water(35)))
+  //
+  //      i.getMessage mustEqual "The water is too cold"
+  //
+  //    }
 
 
-//behavior of "Coffee.barista"
-//
-//  it should "return 'CoffeeCup' when given 'Arabica Beans, Whole Milk, 50'" ignore  {
-//
-//    Coffee.barista(CoffeeBean("Arabica Beans"), Milk("Whole Milk"),50) map { result => assert(result == CoffeeCup(, FrothedMilk)}
-//  }
-//
+behavior of "Coffee.barista"
 
+  it should "return 'CoffeeCup' when given 'Arabica Beans, Whole Milk, 50'" in  {
 
+    Coffee.barista(CoffeeBean("Arabica Beans"), Milk("Whole Milk"),50) map { result => assert(result == CoffeeCup(Espresso(GroundCoffee("Arabica Beans"), 45), FrothedMilk("Whole Milk")))}
+  }
 
-
-
-//  "return 'Latte(Whole Milk, 50)' when given  in {
-    //
-    //      Coffee.barista(CoffeeBean("Arabica Beans"), Milk("Whole Milk"), 50) mustEqual Latte("Whole Milk", 45)
-    //    }
-    //  }
 }
-
-
-
-
-//  behavior of "Coffee.barista"
-//
-//
-//      it should "return a valid Coffee with the input 'Coffee.barista(CoffeeBean('Arabica Beans'), Milk('Whole Milk'), 50)'" ignore {
-////       val finishedCoffee = Coffee.barista(CoffeeBean("Arabica Beans"), Milk("Whole Milk"), 50)
-//
-//        Coffee.barista(CoffeeBean("Arabica Beans"), Milk("Whole Milk"), 50) map   {result => assert(result == "You have brewed the following coffee: Coffee made with Arabica Beans at 50 degrees with Whole Milk")
-//        }
-//      }
-
 
 
 
